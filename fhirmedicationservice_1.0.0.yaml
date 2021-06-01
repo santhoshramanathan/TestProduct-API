@@ -1,0 +1,143 @@
+---
+swagger: "2.0"
+info:
+  title: "FHIRMedicationService"
+  version: "1.0.0"
+  description: "FHIRMedicationService"
+  x-ibm-name: "fhirmedicationservice"
+paths:
+  /medicationrequest:
+    get:
+      operationId: "getMedicationrequest"
+      responses:
+        200:
+          description: "The operation was successful."
+          schema:
+            $ref: "#/definitions/response"
+      produces:
+      - "application/json"
+      description: "Retrieve medicationrequest"
+      parameters:
+      - name: "identifier"
+        in: "query"
+        type: "string"
+        required: true
+basePath: "/fhirmedicationservice/v1"
+definitions:
+  response:
+    type: "object"
+    properties:
+      patient:
+        $ref: "#/definitions/patient"
+      medication:
+        $ref: "#/definitions/medication"
+  patient:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      lastUpdatedDate:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      gender:
+        type: "string"
+      birthDate:
+        type: "string"
+      disease:
+        type: "string"
+      mobile:
+        type: "string"
+      address:
+        type: "array"
+        items:
+          $ref: "#/definitions/address"
+  medication:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      status:
+        type: "string"
+      medicationReference:
+        $ref: "#/definitions/medicationreference"
+      practitioner:
+        $ref: "#/definitions/practitioner"
+      encounter:
+        $ref: "#/definitions/encounter"
+      authoredOn:
+        type: "string"
+      disease:
+        type: "string"
+      dosageInstruction:
+        type: "array"
+        items:
+          $ref: "#/definitions/dosageInstructions"
+  address:
+    type: "object"
+    properties:
+      use:
+        type: "string"
+      type:
+        type: "string"
+      text:
+        type: "string"
+      line:
+        type: "array"
+        items:
+          type: "string"
+      city:
+        type: "string"
+      district:
+        type: "string"
+      state:
+        type: "string"
+      postalCode:
+        type: "string"
+  medicationreference:
+    type: "object"
+    properties:
+      reference:
+        type: "string"
+      display:
+        type: "string"
+      medicineName:
+        type: "string"
+  practitioner:
+    type: "object"
+    properties:
+      reference:
+        type: "string"
+      name:
+        type: "string"
+  encounter:
+    type: "object"
+    properties:
+      reference:
+        type: "string"
+  dosageInstructions:
+    type: "object"
+    properties:
+      sequence:
+        type: "integer"
+      text:
+        type: "string"
+x-ibm-configuration:
+  assembly:
+    execute:
+    - proxy:
+        title: "proxy"
+        timeout: 60
+        verb: "keep"
+        cache-response: "protocol"
+        cache-ttl: 900
+        version: "1.0.0"
+        target-url: "http://fhirmediservice-http-aceistio3.cloud-integration-ocp45-6fb0b86391cd68c8282858623a1dddff-0000.eu-gb.containers.appdomain.cloud:80$(request.path)"
+    catch: []
+  enforced: true
+  testable: true
+  phase: "realized"
+  cors:
+    enabled: true
